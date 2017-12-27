@@ -2,11 +2,17 @@ import auth from '@/utils/auth'
 
 const user = {
   state: {
-    currentUser: auth.get()
+    get currentUser() {
+      return auth.get()
+    }
   },
   mutations: {
     setUser(state, data) {
-      auth.set(data);
+      if (data == '' || data == null || data == undefined) {
+        auth.clear();
+      } else {
+        auth.set(data);
+      }
     }
   },
   actions: {

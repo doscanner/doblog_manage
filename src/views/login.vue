@@ -71,6 +71,7 @@ export default {
                   type: "success"
                 });
                 this.$store.dispatch("refreshUser", ret.data);
+                this.$router.push({ path: '/' });
               }
             },
             err => {

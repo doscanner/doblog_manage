@@ -27,7 +27,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {
-    auth.clear();
+    store.dispatch("refreshUser", null);
   }
   let user = store.state.user.currentUser;
   if (!user && to.path != '/login') {

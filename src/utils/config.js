@@ -4,7 +4,7 @@ const apiurl = 'http://127.0.0.1:5003';
 const config = {
   api: {
     url: apiurl,
-    timeout: 5000,
+    timeout: 10000,
     module: {
       account: {
         signin: apiurl + '/api/account/adminlogin',
