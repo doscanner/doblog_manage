@@ -1,4 +1,5 @@
-const apiurl = 'http://127.0.0.1:5003';
+const apiurl = 'http://api.doscanner.cn';
+// const apiurl = 'http://127.0.0.1:5003';
 // const weburl = 'http://localhost:47016';
 // const resurl = 'http://localhost:46940';
 const config = {
