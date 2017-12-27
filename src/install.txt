@@ -1,0 +1,15 @@
+npm i -g vue-cli
+mkdir my-project && cd my-project
+vue init webpack
+npm i && npm i element-ui
+
+--npm更新到最新版本
+npm install npm@latest -g
+--npm使用淘宝镜像
+npm config set registry https://registry.npm.taobao.org
+
+--npm install --no-optional
+npm install vuex --save
+npm install axios --save
+npm install --save axios
+npm install qs --save
