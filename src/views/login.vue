@@ -2,10 +2,10 @@
   <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="login-container">
     <h3>登录</h3>
     <el-form-item prop="username">
-      <el-input v-model="ruleForm.username" placeholder="请输入登录账号"></el-input>
+      <el-input v-model="ruleForm.username" @keyup.enter.native="submitForm('ruleForm')" placeholder="请输入登录账号"></el-input>
     </el-form-item>
     <el-form-item prop="password">
-      <el-input type="password" v-model="ruleForm.password" auto-complete="off" placeholder="请输入登录密码"></el-input>
+      <el-input type="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')" auto-complete="off" placeholder="请输入登录密码"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')" size="medium" :loading="loading">登录</el-button>
@@ -71,7 +71,7 @@ export default {
                   type: "success"
                 });
                 this.$store.dispatch("refreshUser", ret.data);
-                this.$router.push({ path: '/' });
+                this.$router.push({ path: "/" });
               }
             },
             err => {

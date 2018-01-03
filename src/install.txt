@@ -3,6 +3,10 @@ mkdir my-project && cd my-project
 vue init webpack
 npm i && npm i element-ui
 
+--安装element主题
+npm i element-theme
+npm i element-theme-default -D
+
 --npm更新到最新版本
 npm install npm@latest -g
 --npm使用淘宝镜像
