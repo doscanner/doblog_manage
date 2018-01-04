@@ -40,7 +40,7 @@ const request = (options) => {
   let opts = {
     //个性化配置
     loading: !util.checkvalue.isnull(options.loading) ? options.loading : true,
-    auth: !util.checkvalue.isnull(options.auth) ? options.auth : true,
+    isauth: !util.checkvalue.isnull(options.isauth) ? options.isauth : true,
     timeout: !util.checkvalue.isnull(options.timeout) ? options.timeout : service.defaults.timeout,
     //必须配置
     url: options.url,
@@ -62,7 +62,7 @@ const request = (options) => {
   }
 
   //身份
-  if (opts.auth && auth.exist()) {
+  if (opts.isauth && auth.exist()) {
     var auths = auth.get();
     opts.headers['Authorization'] = 'Bearer ' + auths.access_token;
   }
@@ -76,7 +76,6 @@ const request = (options) => {
       background: 'rgba(0, 0, 0, 0.7)'
     });
   }
-
   let promise = new Promise((resolve, reject) => {
     service(opts).then(response => {
         if (opts.loading) {
@@ -85,6 +84,7 @@ const request = (options) => {
         var ret = response.data;
         if (!ret.success && ret.status == config.statuscode.unauthorized) {
           Message.error('登录身份已失效，请重新登录');
+          return;
         }
         resolve(ret);
       }, err => {

@@ -18,7 +18,9 @@ Vue.config.productionTip = false
 Vue.prototype.$post = post
 Vue.prototype.$get = get
 
-Vue.use(ElementUI)
+Vue.use(ElementUI, {
+  size: 'medium'
+})
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -39,7 +41,7 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-new Vue({
+const app = new Vue({
   //el: '#app',
   //template: '<App/>',
   router,

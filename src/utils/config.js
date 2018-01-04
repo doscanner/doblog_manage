@@ -1,4 +1,5 @@
 const apiurl = 'http://api.doscanner.cn';
+const manageurl = 'http://localhost:8080';
 // const apiurl = 'http://127.0.0.1:5003';
 // const weburl = 'http://localhost:47016';
 // const resurl = 'http://localhost:46940';
@@ -9,6 +10,19 @@ const config = {
     module: {
       account: {
         signin: apiurl + '/api/account/adminlogin',
+      },
+      menu: {
+        getlistbyuser: apiurl + '/api/menu/getlistbyuser'
+      }
+    }
+  },
+  manage: {
+    url: manageurl,
+    module: {
+      index: '/',
+      login: '/login',
+      user: {
+        list: '/user/list'
       }
     }
   },

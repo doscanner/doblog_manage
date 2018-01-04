@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import config from "@/utils/config";
+import config from "@/utils/config";
 import { signin } from "@/api/api";
 
 export default {
@@ -59,45 +59,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.loading = true;
-          signin(this.ruleForm.username, this.ruleForm.password).then(
-            ret => {
-              this.loading = false;
-              if (!ret.success) {
-                this.$message.error(ret.msg);
-              } else {
-                this.$message({
-                  message: "恭喜你登录成功，敬请期待后续功能",
-                  type: "success"
-                });
-                this.$store.dispatch("refreshUser", ret.data);
-                this.$router.push({ path: "/" });
-              }
-            },
-            err => {
-              this.loading = false;
-            }
-          );
-          // var param = {
-          //   url: config.api.module.account.signin,
-          //   data: {
-          //     Account: this.ruleForm.username,
-          //     Password: this.ruleForm.password
-          //   }
-          // };
-          // this.$post(param).then(
-          //   ret => {
-          //     this.loading = false;
-          //     if (!ret.success) {
-          //       this.$message.error(ret.msg);
-          //     } else {
-          //       this.$store.dispatch("refreshUser", ret.data);
-          //     }
-          //   },
-          //   err => {
-          //     this.loading = false;
-          //   }
-          // );
+          this.login();
         } else {
           return false;
         }
@@ -105,6 +67,47 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    login() {
+      this.loading = true;
+      signin(this.ruleForm.username, this.ruleForm.password).then(
+        ret => {
+          this.loading = false;
+          if (!ret.success) {
+            this.$message.error(ret.msg);
+          } else {
+            this.$message({
+              message: "恭喜你登录成功，敬请期待后续功能",
+              type: "success"
+            });
+            this.$store.dispatch("refreshUser", ret.data);
+            this.$router.push({ path: config.manage.module.index });
+          }
+        },
+        err => {
+          this.loading = false;
+        }
+      );
+      // var param = {
+      //   url: config.api.module.account.signin,
+      //   data: {
+      //     Account: this.ruleForm.username,
+      //     Password: this.ruleForm.password
+      //   }
+      // };
+      // this.$post(param).then(
+      //   ret => {
+      //     this.loading = false;
+      //     if (!ret.success) {
+      //       this.$message.error(ret.msg);
+      //     } else {
+      //       this.$store.dispatch("refreshUser", ret.data);
+      //     }
+      //   },
+      //   err => {
+      //     this.loading = false;
+      //   }
+      // );
     }
   }
 };

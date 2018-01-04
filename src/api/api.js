@@ -14,3 +14,10 @@ export function signin(account, password) {
   }
   return post(param)
 }
+
+export function getmenu() {
+  var param = {
+    url: config.api.module.menu.getlistbyuser
+  }
+  return get(param)
+}

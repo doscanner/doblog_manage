@@ -1,18 +1,18 @@
 <template>
-    <div class="header">
-        <div class="logo">后台管理</div>
-        <div class="user-info">
-            <el-dropdown trigger="click" @command="handleCommand">
-                <span class="el-dropdown-link">
-                    <img class="user-logo" src="../../../static/images/thumbnail.jpg"> {{username}}
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="">个人信息</el-dropdown-item>
-                    <el-dropdown-item command="logout">退出</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
-        </div>
+  <div class="header">
+    <div class="logo">后台管理</div>
+    <div class="user-info">
+      <el-dropdown trigger="click" @command="handleCommand">
+        <span class="el-dropdown-link">
+          <img class="user-logo" src="../../../static/images/thumbnail.jpg"> {{username}}
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="">个人信息</el-dropdown-item>
+          <el-dropdown-item command="logout">退出</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -58,11 +58,11 @@ export default {
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  height: 70px;
+  height: 60px;
   font-size: 22px;
-  line-height: 70px;
+  line-height: 60px;
   color: #fff;
-  background-color: #23262E;
+  background-color: #23262e;
 }
 .header .logo {
   float: left;
@@ -86,7 +86,7 @@ export default {
 .user-info .user-logo {
   position: absolute;
   left: 0;
-  top: 15px;
+  top: 10px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
