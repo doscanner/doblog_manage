@@ -13,6 +13,9 @@ const config = {
       },
       menu: {
         getlistbyuser: apiurl + '/api/menu/getlistbyuser'
+      },
+      user: {
+        getadminlist: apiurl + '/api/user/adminlist'
       }
     }
   },

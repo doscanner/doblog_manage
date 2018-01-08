@@ -44,7 +44,7 @@ export default {
           });
           setTimeout(() => {
             loading.close();
-          }, 2000);
+          }, 1000);
           this.$store.dispatch("refreshUser", null);
           this.$router.push("/login");
         })

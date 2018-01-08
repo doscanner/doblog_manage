@@ -15,7 +15,7 @@
 
 <script>
 import config from "@/utils/config";
-import { signin } from "@/api/api";
+import { signin } from "@/api/modules/sys";
 
 export default {
   data() {
@@ -23,9 +23,6 @@ export default {
       if (value === "") {
         callback(new Error("请输入登录账号"));
       } else {
-        // if (this.ruleForm.username !== "") {
-        //   // this.$refs.ruleForm.validateField("username");
-        // }
         callback();
       }
     };
@@ -33,9 +30,6 @@ export default {
       if (value === "") {
         callback(new Error("请输入登录密码"));
       } else {
-        // if (this.ruleForm.password !== "") {
-        //   // this.$refs.ruleForm.validateField("password");
-        // }
         callback();
       }
     };
@@ -76,10 +70,10 @@ export default {
           if (!ret.success) {
             this.$message.error(ret.msg);
           } else {
-            this.$message({
-              message: "恭喜你登录成功，敬请期待后续功能",
-              type: "success"
-            });
+            // this.$message({
+            //   message: "恭喜你登录成功，敬请期待后续功能",
+            //   type: "success"
+            // });
             this.$store.dispatch("refreshUser", ret.data);
             this.$router.push({ path: config.manage.module.index });
           }

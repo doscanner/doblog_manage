@@ -1,19 +1,22 @@
 <template>
   <div class="sidebar">
-    <el-menu :default-active="onRoutes" class="el-menu-vertical-demo" background-color="#393D49" text-color="#c2c2c2" active-text-color="#fff" unique-opened router>
+    <el-menu default-active="onRoutes" class="el-menu-vertical-demo" background-color="#393D49" text-color="#c2c2c2" active-text-color="#fff" unique-opened router>
       <template v-for="item in items">
-        <template v-if="item.sub">
-          <el-submenu :index="item.id">
+        <template v-if="item.sub.length > 0">
+          <el-submenu index="item.id">
             <template slot="title">
-              <i :class="item.iconfont"></i>{{ item.name }}</template>
-            <el-menu-item v-for="(subItem,i) in item.sub" :key="i" :index="subItem.url">
+              <i :class="item.iconfont"></i>
+              <span>{{ item.name }}</span>
+            </template>
+            <el-menu-item v-for="(subItem,i) in item.sub" :index="subItem.url">
               <i :class="subItem.iconfont"></i>{{ subItem.name }}
             </el-menu-item>
           </el-submenu>
         </template>
         <template v-else>
           <el-menu-item :index="item.url">
-            <i :class="item.iconfont"></i>{{ item.name }}
+            <i :class="item.iconfont"></i>
+            <span slot="title">{{ item.name }}</span>
           </el-menu-item>
         </template>
       </template>
@@ -22,55 +25,11 @@
 </template>
 
 <script>
-import { getmenu } from "@/api/api";
+import { getmenu } from "@/api/modules/sys";
 export default {
   data() {
     return {
-      items: [
-        // {
-        //   icon: "el-icon-menu",
-        //   index: "1",
-        //   title: "用户管理",
-        //   subs: [
-        //     {
-        //       index: "/user/list",
-        //       title: "查看管理员",
-        //       icon: "el-icon-tickets"
-        //     },
-        //     {
-        //       index: "",
-        //       title: "查看用户",
-        //       icon: "el-icon-tickets"
-        //     }
-        //   ]
-        // }
-
-        // {
-        //     "id": 1,
-        //     "name": "用户管理",
-        //     "iconfont": "&#xe672;",
-        //     "url": "",
-        //     "parentid": 0,
-        //     "sub": [
-        //         {
-        //             "id": 2,
-        //             "name": "查看管理员",
-        //             "iconfont": "&#xe630;",
-        //             "url": "/User/List?listtype=admin",
-        //             "parentid": 1,
-        //             "sub": []
-        //         },
-        //         {
-        //             "id": 3,
-        //             "name": "查看用户",
-        //             "iconfont": "&#xe608;",
-        //             "url": "/User/List?listtype=user",
-        //             "parentid": 1,
-        //             "sub": []
-        //         }
-        //     ]
-        // }
-      ]
+      items: []
     };
   },
   created() {
@@ -78,7 +37,7 @@ export default {
   },
   computed: {
     onRoutes() {
-      return this.$route.path.replace("/", "");
+      // return this.$route.path.replace("/", "");
     }
   },
   methods: {
