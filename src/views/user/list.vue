@@ -54,16 +54,16 @@
     <el-dialog title="添加管理员" width="600px" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="用户名" prop="account" :label-width="formLabelWidth">
-          <el-input v-model="form.account" auto-complete="off" maxlength="20" placeholder="请输入用户名"></el-input>
+          <el-input v-model="form.account" auto-complete="off" :maxlength="20" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="realname" :label-width="formLabelWidth">
-          <el-input v-model="form.realname" auto-complete="off" maxlength="20" placeholder="请输入姓名"></el-input>
+          <el-input v-model="form.realname" auto-complete="off" :maxlength="20" placeholder="请输入姓名"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
-          <el-input type="password" v-model="form.password" auto-complete="off" maxlength="32" placeholder="请输入密码"></el-input>
+          <el-input type="password" v-model="form.password" auto-complete="off" :maxlength="32" placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="password2" :label-width="formLabelWidth">
-          <el-input type="password" v-model="form.password2" auto-complete="off" maxlength="32" placeholder="请再次输入密码"></el-input>
+          <el-input type="password" v-model="form.password2" auto-complete="off" :maxlength="32" placeholder="请再次输入密码"></el-input>
         </el-form-item>
         <el-form-item label="状态" prop="status" :label-width="formLabelWidth">
           <el-select v-model="form.status" placeholder="请选择状态">
@@ -73,10 +73,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="手机" prop="cellphone" :label-width="formLabelWidth">
-          <el-input v-model="form.cellphone" auto-complete="off" placeholder="请输入手机号"></el-input>
+          <el-input v-model="form.cellphone" auto-complete="off" placeholder="请输入手机号" :maxlength="11"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
-          <el-input v-model="form.email" auto-complete="off" placeholder="请输入邮箱"></el-input>
+          <el-input v-model="form.email" auto-complete="off" placeholder="请输入邮箱" :maxlength="50"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -97,6 +97,9 @@ export default {
       if (value === "") {
         callback(new Error("请输入密码"));
       } else {
+        if (value.length < 6 || value.length > 32) {
+          callback(new Error("长度在 6 到 20 个字符"));
+        }
         if (this.form.password2 !== "") {
           this.$refs.form.validateField("password2");
         }
@@ -109,6 +112,9 @@ export default {
       } else if (value !== this.form.password) {
         callback(new Error("两次输入密码不一致!"));
       } else {
+        if (value.length < 6 || value.length > 32) {
+          callback(new Error("长度在 6 到 20 个字符"));
+        }
         callback();
       }
     };
