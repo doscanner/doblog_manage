@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <el-menu default-active="onRoutes" class="el-menu-vertical-demo" background-color="#393D49" text-color="#c2c2c2" active-text-color="#fff" unique-opened router>
+    <el-menu default-active="onRoutes" unique-opened router @select="handleSelect" class="el-menu-vertical-demo" background-color="#393D49" text-color="#c2c2c2" active-text-color="#fff">
       <template v-for="item in items">
         <template v-if="item.sub.length > 0">
           <el-submenu index="item.id">
@@ -48,10 +48,14 @@ export default {
             this.$message.error(ret.msg);
           } else {
             this.items = ret.data;
+            this.$store.dispatch("refreshPermission", ret.data);
           }
         },
         err => {}
       );
+    },
+    handleSelect(key, keyPath) {
+      this.$router.push({ path: key });
     }
   }
 };

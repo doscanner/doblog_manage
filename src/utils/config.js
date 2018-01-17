@@ -1,4 +1,5 @@
 const apiurl = 'http://api.doscanner.cn';
+// const apiurl = 'http://localhost:21531';
 const manageurl = 'http://localhost:8080';
 // const apiurl = 'http://127.0.0.1:5003';
 // const weburl = 'http://localhost:47016';
@@ -15,7 +16,10 @@ const config = {
         getlistbyuser: apiurl + '/api/menu/getlistbyuser'
       },
       user: {
-        getadminlist: apiurl + '/api/user/adminlist'
+        getadminlist: apiurl + '/api/user/adminlist',
+        getuserlist: apiurl + '/api/user/userlist',
+        save: apiurl + '/api/user/save',
+        delete: apiurl + '/api/user/delete',
       }
     }
   },
@@ -24,8 +28,9 @@ const config = {
     module: {
       index: '/',
       login: '/login',
+      error: '/error/:code',
       user: {
-        list: '/user/list'
+        list: '/user/list/:listtype'
       }
     }
   },
@@ -52,7 +57,9 @@ const config = {
   },
   statuscode: {
     error: 501,
-    unauthorized: 401
+    unauthorized: 401,
+    notfound: 404,
+    notpermission: 502
   },
   enums: {
     orderby: {
@@ -63,6 +70,20 @@ const config = {
       desc: {
         key: 'DESC',
         value: 1
+      }
+    },
+    usertype: {
+      ordinary: {
+        key: 'ordinary',
+        value: 0
+      },
+      admin: {
+        key: 'admin',
+        value: 1
+      },
+      superadmin: {
+        key: 'superadmin',
+        value: 2
       }
     }
   }

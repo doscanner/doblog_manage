@@ -46,6 +46,7 @@ export default {
             loading.close();
           }, 1000);
           this.$store.dispatch("refreshUser", null);
+          this.$store.dispatch("refreshPermission", null);
           this.$router.push("/login");
         })
         .catch(() => {});

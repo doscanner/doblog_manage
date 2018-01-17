@@ -1,6 +1,15 @@
 const util = {
   checkvalue: {
     isnull: function (obj) {
+      // if (obj == null || undefined == obj) {
+      //   return true;
+      // } else {
+      //   if (typeof (obj) == 'number') {
+      //     return false;
+      //   } else {
+      //     return (null == obj || '' == obj || undefined == obj);
+      //   }
+      // }
       return (null == obj || '' == obj || undefined == obj);
     },
     isfunction: function (callback) {

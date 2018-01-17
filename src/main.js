@@ -12,6 +12,8 @@ import {
   post
 } from '@/utils/request'
 
+import util from "@/utils/util"
+
 Vue.config.productionTip = false
 
 //定义全局变量
@@ -37,7 +39,45 @@ router.beforeEach((to, from, next) => {
       path: '/login'
     })
   } else {
-    next()
+    if (to.path == '/login' || to.path == '/' || to.path == '/error/502' || to.path == '/error/404') {
+      //不需要验证页面权限
+      next()
+    } else {
+      let permission = store.state.permission.currentPermission;
+      if (!permission) {
+        next({
+          path: '/login'
+        })
+        return;
+      }
+      var flag = false;
+      for (var i = 0; i < permission.length; i++) {
+        if (flag) {
+          break;
+        }
+        if (!util.checkvalue.isnull(permission[i].url) && to.path == permission[i].url) {
+          flag = true;
+          break;
+        }
+        var sub = permission[i].sub;
+        if (!util.checkvalue.isnull(sub)) {
+          for (var j = 0; j < sub.length; j++) {
+            if (!util.checkvalue.isnull(sub[j].url) && to.path == sub[j].url) {
+              flag = true;
+              break;
+            }
+          }
+        }
+      }
+      if (flag) {
+        next()
+      } else {
+        next({
+          path: '/error/502'
+        })
+      }
+    }
+    // next()
   }
 })
 

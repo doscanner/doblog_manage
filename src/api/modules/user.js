@@ -4,9 +4,9 @@ import {
   post
 } from '@/utils/request'
 
-export function getadminlist(page, size, status, keyword, orderby) {
+export function getlist(page, size, status, keyword, orderby, listtype) {
   var param = {
-    url: config.api.module.user.getadminlist,
+    url: listtype == 'user' ? config.api.module.user.getuserlist : config.api.module.user.getadminlist,
     data: {
       page: page,
       size: size,
@@ -16,4 +16,32 @@ export function getadminlist(page, size, status, keyword, orderby) {
     }
   }
   return get(param)
+}
+
+export function save(id, type, status, account, realname, password, password2, cellphone, email) {
+  var param = {
+    url: config.api.module.user.save,
+    data: {
+      id: id,
+      type: type,
+      status: status,
+      account: account,
+      realname: realname,
+      password: password,
+      password2: password2,
+      cellphone: cellphone,
+      email: email
+    }
+  }
+  return post(param)
+}
+
+export function deletes(ids) {
+  var param = {
+    url: config.api.module.user.delete,
+    data: {
+      ids: ids
+    }
+  }
+  return post(param)
 }

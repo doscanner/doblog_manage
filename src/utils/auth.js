@@ -6,7 +6,7 @@ const auth = {
   },
   get: function () {
     var authdata = localStorage.getItem(this.name);
-    return (auth != null && auth != undefined && auth != '') ? JSON.parse(authdata) : null;
+    return (authdata != null &&authdata != undefined && authdata != '') ? JSON.parse(authdata) : null;
   },
   clear: function () {
     if (this.exist()) {
@@ -14,8 +14,8 @@ const auth = {
     }
   },
   exist: function () {
-    var auth = this.get();
-    if (auth != null && auth != undefined && auth != '')  {
+    var authdata = this.get();
+    if (authdata != null &&authdata != undefined && authdata != '')  {
       return true;
     }
     return false;
