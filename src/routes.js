@@ -24,6 +24,12 @@ let routes = [
     children: [{
         path: config.manage.module.user.list,
         component: resolve => require(['@/views/user/list.vue'], resolve),
+      }, {
+        path: config.manage.module.article.list,
+        component: resolve => require(['@/views/article/list.vue'], resolve),
+      }, {
+        path: config.manage.module.article.edit,
+        component: resolve => require(['@/views/article/edit.vue'], resolve),
       },
       {
         path: config.manage.module.error,

@@ -3,7 +3,7 @@
     <el-menu default-active="onRoutes" unique-opened router @select="handleSelect" class="el-menu-vertical-demo" background-color="#393D49" text-color="#c2c2c2" active-text-color="#fff">
       <template v-for="item in items">
         <template v-if="item.sub.length > 0">
-          <el-submenu index="item.id">
+          <el-submenu :index="item.id">
             <template slot="title">
               <i :class="item.iconfont"></i>
               <span>{{ item.name }}</span>

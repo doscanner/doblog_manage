@@ -1,16 +1,16 @@
 const util = {
   checkvalue: {
     isnull: function (obj) {
-      // if (obj == null || undefined == obj) {
-      //   return true;
-      // } else {
-      //   if (typeof (obj) == 'number') {
-      //     return false;
-      //   } else {
-      //     return (null == obj || '' == obj || undefined == obj);
-      //   }
-      // }
-      return (null == obj || '' == obj || undefined == obj);
+      if (obj == null || undefined == obj) {
+        return true;
+      } else {
+        if (typeof (obj) == 'number') {
+          return false;
+        } else {
+          return (null == obj || '' == obj || undefined == obj);
+        }
+      }
+      // return (null == obj || '' == obj || undefined == obj);
     },
     isfunction: function (callback) {
       return typeof callback === "function";
@@ -35,6 +35,22 @@ const util = {
     },
     isidentity: function (obj) {
       return obj.match(/(^\d{15}$)|(^\d{17}(x|X|\d)$)/);
+    },
+    isInArray: function (arr, value) {
+      for (var i = 0; i < arr.length; i++) {
+        if (value === arr[i]) {
+          return true;
+        }
+      }
+      return false;
+    },
+    isStartInArray: function (arr, value) {
+      for (var i = 0; i < arr.length; i++) {
+        if (value.indexOf(arr[i]) == 0) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 }

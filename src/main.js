@@ -13,6 +13,7 @@ import {
 } from '@/utils/request'
 
 import util from "@/utils/util"
+import config from "@/utils/config"
 
 Vue.config.productionTip = false
 
@@ -25,28 +26,36 @@ Vue.use(ElementUI, {
 })
 Vue.use(VueRouter)
 
+const notpermits = [
+  config.manage.module.login,
+  config.manage.module.index,
+  config.manage.module.article.edit,
+  '/error/502',
+  '/error/404'
+]
+
 const router = new VueRouter({
   routes
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path == '/login') {
+  if (to.path == config.manage.module.login) {
     store.dispatch("refreshUser", null);
   }
   let user = store.state.user.currentUser;
-  if (!user && to.path != '/login') {
+  if (!user && to.path != config.manage.module.login) {
     next({
-      path: '/login'
+      path: config.manage.module.login
     })
   } else {
-    if (to.path == '/login' || to.path == '/' || to.path == '/error/502' || to.path == '/error/404') {
+    if (util.checkvalue.isInArray(notpermits, to.path) || util.checkvalue.isStartInArray(notpermits, to.path)) {
       //不需要验证页面权限
       next()
     } else {
       let permission = store.state.permission.currentPermission;
       if (!permission) {
         next({
-          path: '/login'
+          path: config.manage.module.login
         })
         return;
       }

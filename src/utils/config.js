@@ -20,6 +20,14 @@ const config = {
         getuserlist: apiurl + '/api/user/userlist',
         save: apiurl + '/api/user/save',
         delete: apiurl + '/api/user/delete',
+      },
+      article: {
+        getmanagelist: apiurl + '/api/article/managelist',
+        save: apiurl + '/api/article/save',
+        delete: apiurl + '/api/article/delete',
+      },
+      catalog: {
+        getlist: apiurl + '/api/catalog/getlist'
       }
     }
   },
@@ -31,6 +39,10 @@ const config = {
       error: '/error/:code',
       user: {
         list: '/user/list/:listtype'
+      },
+      article: {
+        list: '/article/list',
+        edit: '/article/edit/:pid'
       }
     }
   },

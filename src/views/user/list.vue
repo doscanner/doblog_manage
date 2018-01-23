@@ -10,7 +10,6 @@
     <div class="panel panel-padding">
       <el-input v-model="select_keyword" placeholder="关键词" class="handle-input mr10"></el-input>
       <el-select v-model="select_status" placeholder="所有状态" class="handle-select mr10">
-        <!-- <el-option label="所有状态" value="-1"></el-option> -->
         <el-option v-for="item in statusArr" :label="item.key" :value="item.val"></el-option>
       </el-select>
       <el-select v-model="select_orderby" placeholder="默认排序" class="handle-select mr10">
