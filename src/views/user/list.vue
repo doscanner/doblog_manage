@@ -23,7 +23,7 @@
           <el-button type="danger" plain size="mini" icon="el-icon-delete" @click="handleDeleteMore"></el-button>
         </el-tooltip>
         <el-tooltip class="item" content="添加" placement="top">
-          <el-button type="danger" plain size="mini" icon="el-icon-edit" @click="handleOpenDialog"></el-button>
+          <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="handleOpenDialog"></el-button>
         </el-tooltip>
       </div>
       <el-table :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
@@ -43,8 +43,6 @@
       </el-table>
     </div>
     <div class="pagination" v-show="totalCount > 0">
-      <!-- <el-pagination @current-change="handleCurrentChange" layout="prev, pager, next" :total="totalCount" :page-count="pageCount">
-      </el-pagination> -->
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-sizes="[10, 20, 30, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
       </el-pagination>
     </div>
