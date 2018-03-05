@@ -4,10 +4,12 @@ import {
   post
 } from '@/utils/request'
 
-export function getlist() {
+export function getcataloglistbypath(path) {
   var param = {
     url: config.api.module.catalog.getlist,
-    data: {}
+    data: {
+      path: path
+    }
   }
   return get(param)
 }

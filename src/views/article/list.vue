@@ -1,59 +1,63 @@
 <template>
-    <div class="table">
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-menu"></i> 文章管理</el-breadcrumb-item>
-                <el-breadcrumb-item>文章列表</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-        <div class="panel panel-padding">
-            <el-input v-model="select_keyword" placeholder="关键词" class="handle-input mr10"></el-input>
-            <el-date-picker v-model="select_date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd"></el-date-picker>
-            <el-select v-model="select_status" placeholder="所有状态" class="handle-select mr10">
-                <el-option v-for="item in statusArr" :label="item.key" :value="item.val"></el-option>
-            </el-select>
-            <el-select v-model="select_orderby" placeholder="默认排序" class="handle-select mr10">
-                <el-option v-for="item in orderByArr" :label="item.key" :value="item.val"></el-option>
-            </el-select>
-            <el-button type="primary" plain icon="el-icon-search" @click="requestData">筛选</el-button>
-        </div>
-        <div class="panel panel-padding">
-            <div class="group-button">
-                <el-tooltip class="item" content="删除" placement="top">
-                    <el-button type="danger" plain size="mini" icon="el-icon-delete" @click="handleDeleteMore"></el-button>
-                </el-tooltip>
-                <el-tooltip class="item" content="添加" placement="top">
-                    <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="handleOpenDialog"></el-button>
-                </el-tooltip>
-            </div>
-            <el-table :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop="title" label="标题" width="150"></el-table-column>
-                <el-table-column prop="catalogname" label="分类" width="120"></el-table-column>
-                <el-table-column prop="statusstr" label="状态"></el-table-column>
-                <el-table-column prop="tags" label="标签"></el-table-column>
-                <el-table-column prop="browsenum" label="浏览量"></el-table-column>
-                <el-table-column prop="createtime" label="添加时间"></el-table-column>
-                <el-table-column label="操作" width="180">
-                    <template scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
-        <div class="pagination" v-show="totalCount > 0">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-sizes="[10, 20, 30, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
-            </el-pagination>
-        </div>
+  <div class="table">
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>
+          <i class="el-icon-menu"></i> 文章管理</el-breadcrumb-item>
+        <el-breadcrumb-item>文章列表</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
+    <div class="panel panel-padding">
+      <el-input v-model="select_keyword" placeholder="关键词" class="handle-input mr10"></el-input>
+      <el-date-picker v-model="select_date" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd"></el-date-picker>
+      <el-select v-model="select_catalog" multiple placeholder="所有分类">
+        <el-option v-for="item in catalogArr" :label="item.name" :value="item.pid" :key="item.pid"></el-option>
+      </el-select>
+      <el-select v-model="select_status" placeholder="所有状态" class="handle-select mr10">
+        <el-option v-for="item in statusArr" :label="item.key" :value="item.val" :key="item.val"></el-option>
+      </el-select>
+      <el-select v-model="select_orderby" placeholder="默认排序" class="handle-select mr10">
+        <el-option v-for="item in orderByArr" :label="item.key" :value="item.val" :key="item.val"></el-option>
+      </el-select>
+      <el-button type="primary" plain icon="el-icon-search" @click="requestData">筛选</el-button>
+    </div>
+    <div class="panel panel-padding">
+      <div class="group-button">
+        <el-tooltip class="item" content="删除" placement="top">
+          <el-button type="danger" plain size="mini" icon="el-icon-delete" @click="handleDeleteMore"></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" content="添加" placement="top">
+          <el-button type="primary" plain size="mini" icon="el-icon-edit" @click="handleOpenDialog"></el-button>
+        </el-tooltip>
+      </div>
+      <el-table :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column prop="title" label="标题" width="150"></el-table-column>
+        <el-table-column prop="catalognames" label="分类" width="120"></el-table-column>
+        <el-table-column prop="statusstr" label="状态"></el-table-column>
+        <el-table-column prop="tags" label="标签"></el-table-column>
+        <el-table-column prop="browsenum" label="浏览量"></el-table-column>
+        <el-table-column prop="createtime" label="添加时间"></el-table-column>
+        <el-table-column label="操作" width="180">
+          <template scope="scope">
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="pagination" v-show="totalCount > 0">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="1" :page-sizes="[10, 20, 30, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="totalCount">
+      </el-pagination>
+    </div>
+  </div>
 </template>
 
 <script>
-import { getlist, deletes } from "@/api/modules/article";
 import util from "@/utils/util";
 import config from "@/utils/config";
+import { getlist, deletes } from "@/api/modules/article";
+import { getcataloglistbypath } from "@/api/modules/catalog";
 
 export default {
   data() {
@@ -63,6 +67,7 @@ export default {
       select_keyword: "",
       select_date: "",
       select_status: "",
+      select_catalog: [],
       select_orderby: "",
       tableData: [],
       totalCount: 0,
@@ -71,6 +76,7 @@ export default {
       multipleSelection: [],
       dialogFormVisible: false,
       statusArr: [],
+      catalogArr: [],
       orderByArr: [
         { key: "默认排序", val: "CreatetimeDesc" },
         { key: "按标题升序", val: "TitleAsc" },
@@ -82,6 +88,7 @@ export default {
   created() {
     this.init();
     this.initStatus();
+    this.initCatalog();
     this.requestData();
   },
   computed: {},
@@ -92,6 +99,7 @@ export default {
       this.select_keyword = "";
       this.select_date = "";
       this.select_status = "";
+      this.select_catalog = [];
       this.select_orderby = "";
       this.tableData = [];
       this.totalCount = 0;
@@ -105,11 +113,24 @@ export default {
       this.statusArr.push({ key: "锁定", val: 0 });
       this.statusArr.push({ key: "正常", val: 1 });
     },
+    initCatalog() {
+      getcataloglistbypath(config.catalog.path1).then(
+        ret => {
+          if (!ret.success) {
+            this.$message.error(ret.msg);
+          } else {
+            this.catalogArr = ret.data;
+          }
+        },
+        err => {}
+      );
+    },
     requestData() {
       getlist(
         this.pageIndex,
         this.pageSize,
         util.checkvalue.isnull(this.select_status) ? -1 : this.select_status,
+        this.select_catalog.join(","),
         this.select_keyword,
         util.checkvalue.isnull(this.select_date) ? "" : this.select_date[0],
         util.checkvalue.isnull(this.select_date) ? "" : this.select_date[1],

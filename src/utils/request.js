@@ -11,10 +11,10 @@ import util from '@/utils/util'
 var service = axios.create({
   baseURL: config.api.url,
   timeout: config.api.timeout,
-  transformRequest: [function (data) {
-    data = Qs.stringify(data);
-    return data;
-  }],
+  // transformRequest: [function (data) {
+  //   data = Qs.stringify(data);
+  //   return data;
+  // }],
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
@@ -56,9 +56,21 @@ const request = (options) => {
   } else if (opts.method == config.httpmethod.post) {
     opts.data = options.data;
     opts.headers = !util.checkvalue.isnull(options.headers) ? options.headers : service.defaults.headers.post;
-    opts.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+    if (util.checkvalue.isnull(opts.headers['Content-Type'])) {
+      opts.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+    }
   } else {
-    alert('不支持' + opts.method + '方法');
+    Message.error('不支持' + opts.method + '方法');
+  }
+
+  //转换 上传文件时 需要填写为false
+  if (options.transRequest == undefined || options.transRequest == true) {
+    opts.transformRequest = [function (data) {
+      if (!util.checkvalue.isnull(data)) {
+        data = Qs.stringify(data);
+      }
+      return data;
+    }];
   }
 
   //身份

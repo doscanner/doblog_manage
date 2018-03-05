@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item label="文章分类" prop="catalogId">
         <el-select v-model="ruleForm.catalogId" multiple placeholder="请选择文章分类">
-          <el-option v-for="item in catalogArr" :label="item.pid" :value="item.name" :key="item.name"></el-option>
+          <el-option v-for="item in catalogArr" :label="item.name" :value="item.pid" :key="item.pid"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="状态" prop="status">
@@ -27,55 +27,69 @@
         </el-tag>
         <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
         </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+</el-button>
       </el-form-item>
       <el-form-item label="内容">
-        <div v-loading="imageLoading" element-loading-text="请稍等，图片上传中">
-          <quill-editor ref="newEditor" style="height: 400px;margin-bottom: 54px;" v-model="editorContent" @change="editorChange">
-          </quill-editor>
-          <form action="" method="post" enctype="multipart/form-data" id="uploadFormMulti">
-            <input style="display: none" :id="uniqueId" type="file" name="avator" multiple accept="image/jpg,image/jpeg,image/png,image/gif" @change="uploadImg('uploadFormMulti')">
-          </form>
-        </div>
+        <rich-text-editor :text="content" :uploadCallback="uploadCallback" @editorChange="editorChange">
+        </rich-text-editor>
+      </el-form-item>
+      <el-form-item label="配图" prop="figurepath">
+        <el-upload class="upload-demo" :action="uploadImgUrl" :multiple="false" :data="uploadImgdata" :on-preview="handlePreview" :on-success="uploadImgSuccess" :on-error="uploadImgError" :before-upload="uploadImgBefore" :before-remove="handleBeforeRemove" list-type="picture" :file-list="imgList" :limit="1">
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif/bmp文件，且不超过4mb</div>
+        </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')" :loading="loading">保存</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-dialog title="配图" :visible.sync="centerDialogVisible" width="40%" :close-on-click-modal="false" center>
+      <el-row>
+        <el-col>
+          <el-card :body-style="{ padding: '0px' }">
+            <img :src="previewImgPath" class="image">
+          </el-card>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 <script>
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
-import Quill from "quill";
-import $ from "jquery";
+import richTextEditor from "@/components/richTextEditor.vue";
+import util from "@/utils/util";
+import config from "@/utils/config";
+import { getcataloglistbypath } from "@/api/modules/catalog";
+import { getsingle, save } from "@/api/modules/article";
+
 export default {
-  components: {
-    quillEditor
-  },
+  components: { richTextEditor },
   data() {
     return {
-      statusArr: [],
-      catalogArr: [],
-      dynamicTags: ["标签一", "标签二", "标签三"],
+      loading: false,
+      pid: "",
+      dynamicTags: [],
       inputVisible: false,
       inputValue: "",
+      statusArr: [],
+      catalogArr: [],
+      content: "测试",
+      uploadImgUrl: config.api.module.article.uploadimg,
+      get uploadImgdata() {
+        return { imgid: this.pid };
+      },
+      imgList: [],
+      previewImgPath: "",
+      centerDialogVisible: false,
+      uploadImage: "",
       ruleForm: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        title: "",
+        catalogId: "",
+        status: ""
       },
       rules: {
         title: [
-          { required: true, message: "请输入标题", trigger: "blur" },
+          { required: true, message: "请输入文章标题", trigger: "blur" },
           {
             min: 1,
             max: 200,
@@ -83,66 +97,21 @@ export default {
             trigger: "blur"
           }
         ],
-        region: [
-          { required: true, message: "请选择活动区域", trigger: "change" }
+        catalogId: [
+          { required: true, message: "请选择文章分类", trigger: "change" }
         ],
-        date1: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择日期",
-            trigger: "change"
-          }
-        ],
-        date2: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择时间",
-            trigger: "change"
-          }
-        ],
-        type: [
-          {
-            type: "array",
-            required: true,
-            message: "请至少选择一个活动性质",
-            trigger: "change"
-          }
-        ],
-        resource: [
-          { required: true, message: "请选择活动资源", trigger: "change" }
-        ],
-        desc: [{ required: true, message: "请填写活动形式", trigger: "blur" }]
-      },
-      imageLoading: false,
-      editorContent: "",
-      uniqueId: "file_test"
+        status: [{ required: true, message: "请选择状态", trigger: "change" }]
+      }
     };
   },
   created() {
-    console.log(this.$route.params.pid);
     this.initStatus();
+    this.initCatalog();
+    this.initForm();
   },
-  mounted() {
-    var vm = this;
-    var imgHandler = async function(image) {
-      vm.addImgRange = vm.$refs.newEditor.quill.getSelection();
-      if (image) {
-        var fileInput = document.getElementById(vm.uniqueId); //隐藏的file文本ID
-        fileInput.click(); //加一个触发事件
-      }
-    };
-    vm.$refs.newEditor.quill
-      .getModule("toolbar")
-      .addHandler("image", imgHandler);
-  },
+  watch: {},
+  mounted() {},
   methods: {
-    initStatus() {
-      this.statusArr = [];
-      this.statusArr.push({ key: "正常", val: 1 });
-      this.statusArr.push({ key: "锁定", val: 0 });
-    },
     handleClose(tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
     },
@@ -160,60 +129,180 @@ export default {
       this.inputVisible = false;
       this.inputValue = "";
     },
+    uploadImgBefore(file) {
+      if (this.imgList != null && this.imgList.length >= 1) {
+        this.$message({
+          message: "只能上传一张图片",
+          type: "warning"
+        });
+        return false;
+      }
+      const isJPG =
+        file.type === "image/gif" ||
+        file.type === "image/jpeg" ||
+        file.type === "image/jpg" ||
+        file.type === "image/png";
+      if (!isJPG) {
+        this.$message({
+          message: "上传配图只能是 JPG|JPEG|PNG|GIF 格式!",
+          type: "warning"
+        });
+        return false;
+      }
+      return true;
+    },
+    uploadImgSuccess(response, file, fileList) {
+      if (response.success) {
+        this.imgList = [];
+        this.imgList.push({ name: this.pid, url: response.data.filepath });
+        this.uploadImage = this.pid + "|" + config.enums.filetype.temp.key;
+      } else {
+        this.imgList = [];
+        this.$message.error("上传失败");
+      }
+    },
+    uploadImgError(err, file, fileList) {
+      this.$message.error("error:上传失败");
+      console.log(err);
+    },
+    handleBeforeRemove(file, fileList) {
+      this.imgList = [];
+    },
+    handlePreview(file) {
+      this.previewImgPath = file.url.toString();
+      this.centerDialogVisible = true;
+    },
+    initStatus() {
+      this.statusArr = [];
+      this.statusArr.push({ key: "正常", val: 1 });
+      this.statusArr.push({ key: "锁定", val: 0 });
+    },
+    initCatalog() {
+      getcataloglistbypath(config.catalog.path1).then(
+        ret => {
+          if (!ret.success) {
+            this.$message.error(ret.msg);
+          } else {
+            this.catalogArr = ret.data;
+          }
+        },
+        err => {}
+      );
+    },
+    initForm: function() {
+      var pid = this.$route.params.pid;
+      var newguid = util.newGuid();
+      this.pid = util.checkvalue.isnull(pid) || pid == 1 ? newguid : pid;
+      if (pid == 1) {
+        return;
+      }
+      getsingle(pid).then(
+        ret => {
+          if (!ret.success) {
+            this.$message.error(ret.msg);
+            this.pid = newguid;
+          } else {
+            if (!util.checkvalue.isnull(ret.data)) {
+              this.pid = ret.data.pid;
+              this.ruleForm.title = ret.data.title;
+              this.content = ret.data.content;
+              this.ruleForm.status = ret.data.status;
+              this.dynamicTags = util.checkvalue.isnull(ret.data.tags)
+                ? []
+                : ret.data.tags.split(",");
+              this.ruleForm.catalogId = util.checkvalue.isnull(
+                ret.data.catalogid
+              )
+                ? []
+                : ret.data.catalogid;
+              if (!util.checkvalue.isnull(ret.data.figurepath)) {
+                this.uploadImage =
+                  this.pid + "|" + config.enums.filetype.formal.key;
+                this.imgList.push({
+                  name: this.pid,
+                  url: config.res.url + ret.data.figurepath
+                });
+              }
+            }
+          }
+        },
+        err => {
+          this.pid = newguid;
+        }
+      );
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          if (util.checkvalue.isnull(this.content)) {
+            this.$message({
+              message: "请填写文章内容",
+              type: "warning"
+            });
+            return false;
+          } else {
+            this.save();
+          }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.content = "";
+      this.dynamicTags = [];
     },
-    editorChange({ editor, html, text }) {
-      var vm = this;
-      vm.$emit("editorChange", html);
+    editorChange: function(html) {
+      this.content = html;
     },
-    uploadImg: async function(id) {
+    uploadCallback(formData) {
       var vm = this;
-      vm.imageLoading = true;
-      var formData = new FormData($("#" + id)[0]);
-      try {
-        const url = await vm.uploadImgReq(formData); // 自定义的图片上传函数
-        if (url != null && url.length > 0) {
-          var value = url;
-          vm.addImgRange = vm.$refs.newEditor.quill.getSelection();
-          value = value.indexOf("http") != -1 ? value : "http:" + value;
-          vm.$refs.newEditor.quill.insertEmbed(
-            vm.addImgRange != null ? vm.addImgRange.index : 0,
-            "image",
-            value,
-            Quill.sources.USER
-          );
-        } else {
-          vm.$message.warning("图片增加失败");
+      formData.append("imgid", this.pid);
+      var param = {
+        url: config.api.module.article.uploadeditorimg,
+        data: formData,
+        transRequest: false,
+        headers: {
+          "Content-Type": "multipart/form-data"
         }
-        document.getElementById(vm.uniqueId).value = "";
-      } catch ({ message: msg }) {
-        document.getElementById(vm.uniqueId).value = "";
-        vm.$message.warning(msg);
-      }
-      vm.imageLoading = false;
-    },
-    uploadImgReq(formData) {
-      // 这里实现你自己的图片上传
+      };
       return new Promise((resolve, reject) => {
-        if (true) {
-          resolve(
-            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1514179021485&di=fae56d93e493b0a50f550ed16a8c5f9d&imgtype=0&src=http%3A%2F%2Fpic.92to.com%2F201612%2F11%2Faceb0f89128a4554a33d5a735e165ca9_th.jpg"
-          );
-        } else {
-          reject({ message: "图片上传失败" });
-        }
+        this.$post(param).then(
+          ret => {
+            if (!ret.success) {
+              this.$message.error(ret.msg);
+            } else {
+              resolve(ret.data.filepath);
+            }
+          },
+          err => {}
+        );
       });
+    },
+    save: function() {
+      this.loading = true;
+      save(
+        this.pid,
+        this.ruleForm.title,
+        this.content,
+        this.ruleForm.status,
+        this.dynamicTags.join(","),
+        this.uploadImage,
+        this.ruleForm.catalogId.join(",")
+      ).then(
+        ret => {
+          this.loading = false;
+          if (!ret.success) {
+            this.$message.error(ret.msg);
+          } else {
+            this.$router.push({ path: config.manage.module.article.list });
+          }
+        },
+        err => {
+          this.loading = false;
+        }
+      );
     }
   }
 };
@@ -239,7 +328,8 @@ export default {
   margin-left: 10px;
   vertical-align: bottom;
 }
-.ql-container {
-  min-height: 100px;
+.image {
+  width: 100%;
+  display: block;
 }
 </style>

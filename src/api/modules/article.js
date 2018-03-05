@@ -4,13 +4,14 @@ import {
   post
 } from '@/utils/request'
 
-export function getlist(page, size, status, keyword, startdate, enddate, orderby) {
+export function getlist(page, size, status, catalogid, keyword, startdate, enddate, orderby) {
   var param = {
     url: config.api.module.article.getmanagelist,
     data: {
       page: page,
       size: size,
       status: status,
+      catalogid: catalogid,
       keyword: keyword,
       startdate: startdate,
       enddate: enddate,
@@ -20,7 +21,17 @@ export function getlist(page, size, status, keyword, startdate, enddate, orderby
   return get(param)
 }
 
-export function save(pid, title, content, status, tags, figurepath, catalogid) {
+export function getsingle(pid) {
+  var param = {
+    url: config.api.module.article.getsingle,
+    data: {
+      pid: pid
+    }
+  }
+  return get(param)
+}
+
+export function save(pid, title, content, status, tags, uploadImage, catalogid) {
   var param = {
     url: config.api.module.article.save,
     data: {
@@ -29,7 +40,7 @@ export function save(pid, title, content, status, tags, figurepath, catalogid) {
       content: content,
       status: status,
       tags: tags,
-      figurepath: figurepath,
+      uploadImage: uploadImage,
       catalogid: catalogid
     }
   }
