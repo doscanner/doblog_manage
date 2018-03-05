@@ -252,6 +252,7 @@ export default {
       this.$refs[formName].resetFields();
       this.content = "";
       this.dynamicTags = [];
+      this.imgList=[];
     },
     editorChange: function(html) {
       this.content = html;
