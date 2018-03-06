@@ -25,6 +25,9 @@ let routes = [
         path: config.manage.module.user.list,
         component: resolve => require(['@/views/user/list.vue'], resolve),
       }, {
+        path: config.manage.module.user.info,
+        component: resolve => require(['@/views/user/info.vue'], resolve),
+      }, {
         path: config.manage.module.article.list,
         component: resolve => require(['@/views/article/list.vue'], resolve),
       }, {

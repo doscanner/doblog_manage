@@ -64,7 +64,7 @@
         </el-form-item>
         <el-form-item label="状态" prop="status" :label-width="formLabelWidth">
           <el-select v-model="form.status" placeholder="请选择状态">
-            <el-option v-for="item in statusArr" :label="item.key" :value="item.val" v-if="item.val!=-1"></el-option>
+            <el-option v-for="item in statusArr" :label="item.key" :value="item.val" :key="item.val" v-if="item.val!=-1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="手机" prop="cellphone" :label-width="formLabelWidth">
@@ -76,7 +76,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button size="mini" @click="resetForm('form')">重 置</el-button>
-        <el-button type="primary" size="mini" @click="submitForm('form')" :loading="loading">提 交</el-button>
+        <el-button type="primary" size="mini" @click="submitForm('form')" :loading="loading">保 存</el-button>
       </div>
     </el-dialog>
   </div>

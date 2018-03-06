@@ -4,10 +4,10 @@
     <div class="user-info">
       <el-dropdown trigger="click" @command="handleCommand">
         <span class="el-dropdown-link">
-          <img class="user-logo" src="../../../static/images/thumbnail.jpg"> {{username}}
+          <img class="user-logo" :src="headimg"> {{username}}
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="">个人信息</el-dropdown-item>
+          <el-dropdown-item command="userinfo">个人信息</el-dropdown-item>
           <el-dropdown-item command="logout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -15,17 +15,24 @@
   </div>
 </template>
 <script>
+import config from "@/utils/config";
 export default {
   data() {
     let user = this.$store.state.user.currentUser;
     return {
-      username: user ? user.client_name : ""
+      username: user ? user.client_name : "",
+      headimg:
+        user && user.headimg
+          ? config.res.url + user.headimg + "?time=" + new Date().getTime()
+          : "../../../static/images/thumbnail.jpg"
     };
   },
   methods: {
     handleCommand(command) {
       if (command == "logout") {
         this.logout();
+      } else if (command == "userinfo") {
+        this.$router.push({ path: config.manage.module.user.info });
       }
     },
     logout: function() {

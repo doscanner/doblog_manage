@@ -1,9 +1,9 @@
  const apiurl = 'http://api.doscanner.cn';
  //const apiurl = 'http://localhost:21531';
  const manageurl = 'http://localhost:8080';
- // const weburl = 'http://localhost:47016';
+ //const weburl = 'http://localhost:47016';
  const resurl = 'http://res.doscanner.cn';
- //  const resurl = 'http://localhost:46940';
+ //const resurl = 'http://localhost:46940';
  const config = {
    api: {
      url: apiurl,
@@ -20,6 +20,9 @@
          getuserlist: apiurl + '/api/user/userlist',
          save: apiurl + '/api/user/save',
          delete: apiurl + '/api/user/delete',
+         getuserinfo: apiurl + '/api/user/getuserinfo',
+         setuserinfo: apiurl + '/api/user/setuserinfo',
+         uploadheadimg: apiurl + '/api/user/uploadheadimg'
        },
        article: {
          getmanagelist: apiurl + '/api/article/managelist',
@@ -41,7 +44,8 @@
        login: '/login',
        error: '/error/:code',
        user: {
-         list: '/user/list/:listtype'
+         list: '/user/list/:listtype',
+         info: '/user/info'
        },
        article: {
          list: '/article/list',

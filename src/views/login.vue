@@ -49,6 +49,10 @@ export default {
       }
     };
   },
+  created() {
+    this.$store.dispatch("refreshUser", null);
+    this.$store.dispatch("refreshPermission", null);
+  },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {

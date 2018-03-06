@@ -30,6 +30,7 @@ const notpermits = [
   config.manage.module.login,
   config.manage.module.index,
   config.manage.module.article.edit,
+  config.manage.module.user.info,
   '/error/502',
   '/error/404'
 ]

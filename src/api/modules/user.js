@@ -45,3 +45,29 @@ export function deletes(ids) {
   }
   return post(param)
 }
+
+export function getuserinfo(id) {
+  var param = {
+    url: config.api.module.user.getuserinfo,
+    data: {
+      userid: id
+    }
+  }
+  return get(param)
+}
+
+export function setuserinfo(id, pwd, pwd2, realname, cellphone, email, uploadImage) {
+  var param = {
+    url: config.api.module.user.setuserinfo,
+    data: {
+      password: pwd,
+      password2: pwd2,
+      realname: realname,
+      cellphone: cellphone,
+      email: email,
+      id: id,
+      uploadImage: uploadImage,
+    }
+  }
+  return post(param)
+}

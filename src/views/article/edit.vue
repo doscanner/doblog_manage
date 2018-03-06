@@ -4,6 +4,7 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-menu"></i> 文章管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/article/list' }">文章列表</el-breadcrumb-item>
         <el-breadcrumb-item>编辑文章</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -18,11 +19,11 @@
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="ruleForm.status" placeholder="请选择状态">
-          <el-option v-for="item in statusArr" :label="item.key" :value="item.val"></el-option>
+          <el-option v-for="item in statusArr" :label="item.key" :value="item.val" :key="item.val"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="标签">
-        <el-tag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false" @close="handleClose(tag)">
+        <el-tag type="success" :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false" @close="handleClose(tag)">
           {{tag}}
         </el-tag>
         <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
@@ -40,8 +41,8 @@
         </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')" :loading="loading">保存</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button size="small" type="primary" @click="submitForm('ruleForm')" :loading="loading">保存</el-button>
+        <el-button size="small" @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
     <el-dialog title="配图" :visible.sync="centerDialogVisible" width="40%" :close-on-click-modal="false" center>
@@ -252,7 +253,7 @@ export default {
       this.$refs[formName].resetFields();
       this.content = "";
       this.dynamicTags = [];
-      this.imgList=[];
+      this.imgList = [];
     },
     editorChange: function(html) {
       this.content = html;
