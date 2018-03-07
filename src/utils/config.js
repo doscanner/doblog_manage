@@ -10,7 +10,7 @@
      timeout: 10000,
      module: {
        account: {
-         signin: apiurl + '/api/account/adminlogin',
+         signin: apiurl + '/api/account/adminlogin'
        },
        menu: {
          getlistbyuser: apiurl + '/api/menu/getlistbyuser'
@@ -30,10 +30,14 @@
          save: apiurl + '/api/article/save',
          delete: apiurl + '/api/article/delete',
          uploadimg: apiurl + '/api/article/uploadimg',
-         uploadeditorimg: apiurl + '/api/article/uploadeditorimg',
+         uploadeditorimg: apiurl + '/api/article/uploadeditorimg'
        },
        catalog: {
-         getlist: apiurl + '/api/catalog/getlist'
+         getlist: apiurl + '/api/catalog/getlist',
+         managelist: apiurl + '/api/catalog/managelist',
+         update: apiurl + '/api/catalog/update',
+         addchild: apiurl + '/api/catalog/addchild',
+         delete: apiurl + '/api/catalog/delete'
        }
      }
    },
@@ -50,6 +54,9 @@
        article: {
          list: '/article/list',
          edit: '/article/edit/:pid'
+       },
+       catalog: {
+         list: '/catalog/list'
        }
      }
    },
@@ -111,7 +118,7 @@
        },
        formal: {
          key: 'Formal',
-         value: 0
+         value: 1
        }
      }
    },

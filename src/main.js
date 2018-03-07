@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
     })
   } else {
     if (util.checkvalue.isInArray(notpermits, to.path) || util.checkvalue.isStartInArray(notpermits, to.path)) {
-      //不需要验证页面权限
+      //不需要验证页面权限 
       next()
     } else {
       let permission = store.state.permission.currentPermission;

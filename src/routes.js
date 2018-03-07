@@ -33,6 +33,9 @@ let routes = [
       }, {
         path: config.manage.module.article.edit,
         component: resolve => require(['@/views/article/edit.vue'], resolve),
+      }, {
+        path: config.manage.module.catalog.list,
+        component: resolve => require(['@/views/catalog/list.vue'], resolve),
       },
       {
         path: config.manage.module.error,

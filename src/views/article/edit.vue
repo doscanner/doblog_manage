@@ -36,13 +36,13 @@
       </el-form-item>
       <el-form-item label="配图" prop="figurepath">
         <el-upload class="upload-demo" :action="uploadImgUrl" :multiple="false" :data="uploadImgdata" :on-preview="handlePreview" :on-success="uploadImgSuccess" :on-error="uploadImgError" :before-upload="uploadImgBefore" :before-remove="handleBeforeRemove" list-type="picture" :file-list="imgList" :limit="1">
-          <el-button size="small" type="primary">点击上传</el-button>
+          <el-button size="mini" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif/bmp文件，且不超过4mb</div>
         </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button size="small" type="primary" @click="submitForm('ruleForm')" :loading="loading">保存</el-button>
-        <el-button size="small" @click="resetForm('ruleForm')">重置</el-button>
+        <el-button size="mini" type="primary" @click="submitForm('ruleForm')" :loading="loading">保存</el-button>
+        <el-button size="mini" @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
     <el-dialog title="配图" :visible.sync="centerDialogVisible" width="40%" :close-on-click-modal="false" center>
@@ -314,6 +314,8 @@ export default {
 .demo-ruleForm {
   background-color: #fff;
   padding: 24px;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
 }
 .el-tag + .el-tag {
   margin-left: 10px;

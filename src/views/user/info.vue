@@ -256,6 +256,8 @@ export default {
 .demo-ruleForm {
   background-color: #fff;
   padding: 24px;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
 }
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;

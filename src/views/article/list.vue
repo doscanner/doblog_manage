@@ -33,15 +33,27 @@
       <el-table :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column prop="title" label="标题" width="150"></el-table-column>
-        <el-table-column prop="catalognames" label="分类" width="120"></el-table-column>
+        <el-table-column prop="catalognames" label="分类">
+          <template slot-scope="scope">
+            <el-tag size="mini" v-for="catalog in scope.row.catalognames.split(',')" :key="catalog">
+              {{catalog}}
+            </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="statusstr" label="状态"></el-table-column>
-        <el-table-column prop="tags" label="标签"></el-table-column>
+        <el-table-column prop="tags" label="标签">
+          <template slot-scope="scope">
+            <el-tag size="mini" v-for="tag in scope.row.tags.split(',')" type="success" :key="tag">
+              {{tag}}
+            </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="browsenum" label="浏览量"></el-table-column>
         <el-table-column prop="createtime" label="添加时间"></el-table-column>
         <el-table-column label="操作" width="180">
           <template scope="scope">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="danger" size="mini" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -254,5 +266,8 @@ export default {
 }
 .group-button .el-button {
   margin: 0 0.5rem 0.5rem 0;
+}
+.el-tag + .el-tag {
+  margin-left: 5px;
 }
 </style>

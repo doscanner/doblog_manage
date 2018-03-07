@@ -75,8 +75,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="resetForm('form')">重 置</el-button>
         <el-button type="primary" size="mini" @click="submitForm('form')" :loading="loading">保 存</el-button>
+        <el-button size="mini" @click="resetForm('form')">重 置</el-button>
       </div>
     </el-dialog>
   </div>
