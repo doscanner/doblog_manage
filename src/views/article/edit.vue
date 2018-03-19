@@ -74,7 +74,7 @@ export default {
       inputValue: "",
       statusArr: [],
       catalogArr: [],
-      content: "测试",
+      content: "",
       uploadImgUrl: config.api.module.article.uploadimg,
       get uploadImgdata() {
         return { imgid: this.pid };

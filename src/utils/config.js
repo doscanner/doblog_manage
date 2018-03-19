@@ -1,6 +1,7 @@
  const apiurl = 'http://api.doscanner.cn';
  //const apiurl = 'http://localhost:21531';
- const manageurl = 'http://localhost:8080';
+ const manageurl = 'http://manage.doscanner.cn';
+  //const manageurl = 'http://localhost:8080';
  //const weburl = 'http://localhost:47016';
  const resurl = 'http://res.doscanner.cn';
  //const resurl = 'http://localhost:46940';
