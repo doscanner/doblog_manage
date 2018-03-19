@@ -216,12 +216,12 @@ export default {
               )
                 ? []
                 : ret.data.catalogid;
-              if (!util.checkvalue.isnull(ret.data.figurepath)) {
+              if (!util.checkvalue.isnull(ret.data.relativefigurepath)) {
                 this.uploadImage =
                   this.pid + "|" + config.enums.filetype.formal.key;
                 this.imgList.push({
                   name: this.pid,
-                  url: config.res.url + ret.data.figurepath
+                  url: config.res.url + ret.data.relativefigurepath
                 });
               }
             }
